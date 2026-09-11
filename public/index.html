@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Voice Interviewer</title>
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <div class="background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <header class="navbar">
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <span>AI<span class="accent">NANDI</span></span>
+    </div>
+
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      OFFLINE AI
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- ================= SETUP ================= -->
+
+    <section id="setupView" class="setup-view">
+
+      <div class="hero">
+
+        <div class="eyebrow">
+          <span>●</span> INTELLIGENT VOICE INTERVIEWING
+        </div>
+
+        <h1>
+          Speak naturally.<br>
+          <span>Interview smarter.</span>
+        </h1>
+
+        <p class="hero-text">
+          A profile-aware technical interviewer that adapts questions
+          to your projects, skills and experience.
+        </p>
+
+        <div class="feature-row">
+
+          <div class="feature">
+            <div class="feature-number">01</div>
+            <div>
+              <strong>Profile-aware</strong>
+              <span>Questions tailored to you</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-number">02</div>
+            <div>
+              <strong>Voice-first</strong>
+              <span>Speak naturally</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-number">03</div>
+            <div>
+              <strong>Real-time</strong>
+              <span>Instant interview flow</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="setup-card">
+
+        <div class="card-top">
+          <div>
+            <div class="card-label">START SESSION</div>
+            <h2>Give me something<br>to work with.</h2>
+          </div>
+
+          <div class="step-circle">01</div>
+        </div>
+
+
+        <form id="startForm">
+
+          <div class="input-group">
+
+            <label for="githubUrl">
+              <span class="input-icon">⌘</span>
+              GitHub profile
+            </label>
+
+            <input
+              id="githubUrl"
+              type="url"
+              placeholder="https://github.com/your-username"
+              autocomplete="off"
+            >
+
+            <div class="input-hint">
+              We'll use your public repositories to personalize questions.
+            </div>
+
+          </div>
+
+
+          <div class="divider">
+            <span>OR</span>
+          </div>
+
+
+          <div class="input-group">
+
+            <label for="resume">
+              <span class="input-icon">↥</span>
+              Upload resume
+            </label>
+
+            <div class="file-upload">
+  <input
+    id="resume"
+    type="file"
+    accept=".pdf,.txt,application/pdf,text/plain"
+  >
+</div>
+
+            <div class="input-hint">
+              PDF or TXT · Maximum 5 MB
+            </div>
+
+          </div>
+
+
+          <div id="setupError" class="error-message"></div>
+
+
+          <button
+            id="startButton"
+            class="primary-button"
+            type="submit"
+          >
+            <span>Start voice interview</span>
+            <span class="button-arrow">→</span>
+          </button>
+
+        </form>
+
+
+        <div class="privacy-note">
+          <span>◉</span>
+          Your interview runs locally without a hosted AI API.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= INTERVIEW ================= -->
+
+    <section id="chatView" class="chat-view hidden">
+
+      <div class="interview-header">
+
+        <div>
+          <div class="eyebrow">
+            <span class="live-dot"></span>
+            LIVE VOICE INTERVIEW
+          </div>
+
+          <h2>
+            Welcome, <span id="candidateName">Candidate</span>
+          </h2>
+        </div>
+
+        <button id="restartButton" class="ghost-button">
+          ↻ Restart
+        </button>
+
+      </div>
+
+
+      <div class="interview-layout">
+
+
+        <!-- LEFT -->
+        <div class="interviewer-panel">
+
+          <div class="ai-orb">
+            <div class="orb-ring ring-1"></div>
+            <div class="orb-ring ring-2"></div>
+            <div class="orb-core">
+              <span>✦</span>
+            </div>
+          </div>
+
+          <div class="ai-label">
+            <span class="status-dot"></span>
+            AI INTERVIEWER
+          </div>
+
+          <div id="voiceStatus" class="voice-status">
+            Ready to listen.
+          </div>
+
+          <div class="audio-controls">
+
+            <button id="replayButton" class="control-button">
+              🔊 Hear question again
+            </button>
+
+            <button
+              id="stopAudioButton"
+              class="control-button danger"
+              disabled
+            >
+              🔇 Stop audio
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- RIGHT -->
+        <div class="conversation-panel">
+
+          <div class="panel-header">
+            <span>INTERVIEW TRANSCRIPT</span>
+
+            <span id="recognitionStatus" class="mic-status">
+              Microphone off
+            </span>
+          </div>
+
+
+          <div id="messages" class="messages"></div>
+
+
+          <div class="response-area">
+
+            <div class="transcript-label">
+              YOUR TRANSCRIPT
+            </div>
+
+            <div id="transcript" class="transcript">
+              Your spoken answer will appear here.
+            </div>
+
+
+            <div id="chatError" class="error-message"></div>
+
+
+            <div class="voice-actions">
+
+              <button
+                id="startSpeakingButton"
+                class="voice-button"
+              >
+                🎙 Start speaking
+              </button>
+
+              <button
+                id="stopSpeakingButton"
+                class="voice-button secondary"
+                disabled
+              >
+                ■ Stop microphone
+              </button>
+
+            </div>
+
+
+            <div class="secondary-actions">
+
+              <button
+                id="continueButton"
+                disabled
+              >
+                🎤 Continue speaking
+              </button>
+
+              <button
+                id="clearButton"
+                disabled
+              >
+                Clear
+              </button>
+
+              <button
+                id="sendAnswerButton"
+                class="send-button"
+                disabled
+              >
+                Send answer →
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    <span>AI NANDI</span>
+    <span>•</span>
+    <span>Offline voice intelligence</span>
+  </footer>
+
+
+  <script src="/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "ai-interviewer-voice",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline voice AI interviewer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check server.js && node --check public/app.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "express": "5.2.1",
+    "express-rate-limit": "8.7.0",
+    "multer": "2.3.0",
+    "pdf-parse": "2.4.5"
+  }
+}
